@@ -17,7 +17,7 @@ describe("basket integrity", () => {
     for (const h of HOUSEHOLDS) expect(h.official).toBeUndefined();
   });
 
-  it("every basket states a rationale — a weight without a reason is just a number", () => {
+  it("every basket states a rationale, a weight without a reason is just a number", () => {
     for (const basket of ALL_BASKETS) {
       expect(basket.rationale.length).toBeGreaterThan(20);
     }

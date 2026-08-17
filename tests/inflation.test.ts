@@ -18,7 +18,7 @@ function allOn(groupId: string): Weights {
   return Object.fromEntries(GROUP_IDS.map((id) => [id, id === groupId ? 100 : 0]));
 }
 
-describe("reconstructionError — the load-bearing check", () => {
+describe("reconstructionError, the load-bearing check", () => {
   it("rebuilds the official index to within a tenth of a point", () => {
     const err = reconstructionError(OFFICIAL.weights);
     expect(err.monthsCompared).toBe(101);
@@ -28,13 +28,13 @@ describe("reconstructionError — the load-bearing check", () => {
   });
 
   it("puts the worst month where re-weighting bites hardest (2021)", () => {
-    // The rebuild drifts most where real spending patterns moved most — the
+    // The rebuild drifts most where real spending patterns moved most, the
     // reopening, when one year's fixed weights fit worst. A satisfying error:
     // it has a reason.
     expect(reconstructionError(OFFICIAL.weights).worstMonth).toBe("2021-05");
   });
 
-  it("can actually fail — a check that cannot fail verifies nothing", () => {
+  it("can actually fail, a check that cannot fail verifies nothing", () => {
     // Put every cent on apparel, which barely moves, and the rebuild diverges
     // from the headline by ~2.7pp on average. If this passed, the reconstruction
     // guarantee would be decoration.

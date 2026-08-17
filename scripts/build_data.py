@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Turn the raw BLS response into the compact payload the browser loads.
 
-The site never calls BLS. The keyless BLS tier rate-limits hard — I hit the
-daily cap while building the analysis this tool wraps — so depending on the API
+The site never calls BLS. The keyless BLS tier rate-limits hard: I hit the
+daily cap while building the analysis this tool wraps, so depending on the API
 at runtime would make the calculator unreproducible and dead on a bad day. The
 raw response is committed under data/, and this script bakes it into a small
 JSON the app imports directly, so the whole thing runs offline and the numbers
@@ -11,7 +11,7 @@ reproduce exactly.
 Two traps in the BLS feed, handled the same way as the whose-inflation
 analysis this borrows its data from:
 
-  * a value can be the string "-" — not null, not zero, a hyphen in a numeric
+  * a value can be the string "-", not null, not zero, a hyphen in a numeric
     field. Coerce it to 0 and you have an index level of zero, which reads as
     prices falling 100%% and recovering the next month. These are dropped and
     counted.
@@ -111,7 +111,7 @@ def main() -> None:
     OUT.write_text(json.dumps(out, separators=(",", ":")) + "\n")
     kb = OUT.stat().st_size / 1024
     print(
-        f"wrote {OUT.relative_to(ROOT)} — {len(months)} months, "
+        f"wrote {OUT.relative_to(ROOT)}, {len(months)} months, "
         f"{len(series)} series, {kb:.1f} KB "
         f"(dropped {dropped_unavailable} unavailable, {dropped_annual} annual)"
     )
