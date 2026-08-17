@@ -9,7 +9,8 @@
  * design language matches rent-or-buy deliberately: warm paper, a serif display
  * voice, one accent, honest charts - a portfolio that reads as one hand.
  */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 
 import { CPI, GROUP_IDS, comparableMonths, latestMonth } from "../lib/cpi.js";
 import { ALL_BASKETS, OFFICIAL, share, total } from "../lib/baskets.js";
@@ -304,6 +305,24 @@ function TimeChart(props: { mine: { month: string; rate: number }[] }): JSX.Elem
   const myLast = mineByMonth.get(lastMonth)!;
   const pubLast = pubByMonth.get(lastMonth)!;
 
+  // Hover crosshair: map the pointer to the nearest month and read the real
+  // values for that month. No fabricated data, just the series already drawn.
+  const [hover, setHover] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const onMove = (e: ReactPointerEvent<SVGSVGElement>): void => {
+    const el = svgRef.current;
+    if (!el || months.length < 2) return;
+    const r = el.getBoundingClientRect();
+    const px = ((e.clientX - r.left) / r.width) * CW;
+    const idx = Math.round(((px - PAD.left) / iw) * (months.length - 1));
+    setHover(Math.max(0, Math.min(months.length - 1, idx)));
+  };
+  const hm = hover !== null ? months[hover]! : null;
+  const myV = hm !== null ? mineByMonth.get(hm)! : null;
+  const pubV = hm !== null ? pubByMonth.get(hm)! : null;
+  const gapPp = myV !== null && pubV !== null ? (myV - pubV) * 100 : null;
+  const tipLeft = hover !== null && hover > months.length / 2;
+
   return (
     <div className="mi-card">
       <div className="mi-card-title">Your basket against the headline, year on year</div>
@@ -311,24 +330,60 @@ function TimeChart(props: { mine: { month: string; rate: number }[] }): JSX.Elem
         The shaded band is the gap between what you’d have felt and what was
         reported. Notice it: it’s thin in calm years and opens up in the
         2021 to 2022 shock, the moment the one national number describes people
-        least, and the moment it gets quoted hardest.
+        least, and the moment it gets quoted hardest. Hover to read any month.
       </div>
-      <svg className="mi-chart-svg" viewBox={`0 0 ${CW} ${CH}`} role="img" aria-label="Year-on-year inflation: your basket versus the published CPI.">
-        {gridVals.map((v) => (
-          <g key={v}>
-            <line x1={PAD.left} x2={CW - PAD.right} y1={y(v)} y2={y(v)} className={v === 0 ? "mi-axis-zero" : "mi-grid"} />
-            <text x={PAD.left - 6} y={y(v) + 3} className="mi-axis-label" textAnchor="end">{(v * 100).toFixed(0)}%</text>
-          </g>
-        ))}
-        {yearTicks.map(({ m, i }) => (
-          <text key={m} x={x(i)} y={CH - 8} className="mi-axis-label" textAnchor="middle">{m.slice(0, 4)}</text>
-        ))}
-        <path d={band} className="mi-band" />
-        <path d={line((m) => pubByMonth.get(m)!)} className="mi-line-pub" />
-        <path d={line((m) => mineByMonth.get(m)!)} className="mi-line-mine" />
-        <circle cx={x(months.length - 1)} cy={y(myLast)} r={3.5} className="mi-dot-mine" />
-        <circle cx={x(months.length - 1)} cy={y(pubLast)} r={3} className="mi-dot-pub" />
-      </svg>
+      <div className="mi-chartwrap">
+        <svg
+          ref={svgRef}
+          className="mi-chart-svg"
+          viewBox={`0 0 ${CW} ${CH}`}
+          style={{ touchAction: "none" }}
+          onPointerMove={onMove}
+          onPointerLeave={() => setHover(null)}
+          role="img"
+          aria-label="Year-on-year inflation: your basket versus the published CPI."
+        >
+          {gridVals.map((v) => (
+            <g key={v}>
+              <line x1={PAD.left} x2={CW - PAD.right} y1={y(v)} y2={y(v)} className={v === 0 ? "mi-axis-zero" : "mi-grid"} />
+              <text x={PAD.left - 6} y={y(v) + 3} className="mi-axis-label" textAnchor="end">{(v * 100).toFixed(0)}%</text>
+            </g>
+          ))}
+          {yearTicks.map(({ m, i }) => (
+            <text key={m} x={x(i)} y={CH - 8} className="mi-axis-label" textAnchor="middle">{m.slice(0, 4)}</text>
+          ))}
+          <path d={band} className="mi-band" />
+          <path d={line((m) => pubByMonth.get(m)!)} className="mi-line-pub" />
+          <path d={line((m) => mineByMonth.get(m)!)} className="mi-line-mine" />
+          {hover === null ? (
+            <>
+              <circle cx={x(months.length - 1)} cy={y(myLast)} r={3.5} className="mi-dot-mine" />
+              <circle cx={x(months.length - 1)} cy={y(pubLast)} r={3} className="mi-dot-pub" />
+            </>
+          ) : (
+            <g pointerEvents="none">
+              <line x1={x(hover)} x2={x(hover)} y1={PAD.top} y2={CH - PAD.bottom} className="mi-crosshair" />
+              <circle cx={x(hover)} cy={y(pubV!)} r={3} className="mi-dot-pub" />
+              <circle cx={x(hover)} cy={y(myV!)} r={3.5} className="mi-dot-mine" />
+            </g>
+          )}
+        </svg>
+        {hover !== null && hm !== null && (
+          <div
+            className="mi-tip"
+            style={{ left: `${(x(hover) / CW) * 100}%`, transform: tipLeft ? "translateX(calc(-100% - 14px))" : "translateX(14px)" }}
+            role="status"
+          >
+            <div className="mi-tip-month">{hm}</div>
+            <div className="mi-tip-row"><span><i className="mi-sw-mine" />Your basket</span><b>{pct(myV!, 1)}</b></div>
+            <div className="mi-tip-row"><span><i className="mi-sw-pub" />Published CPI-U</span><b>{pct(pubV!, 1)}</b></div>
+            <div className="mi-tip-row mi-tip-gap">
+              <span>Gap</span>
+              <b style={{ color: gapPp! > 0.05 ? "var(--hot)" : gapPp! < -0.05 ? "var(--cool)" : "var(--ink)" }}>{signedPp(gapPp!)}</b>
+            </div>
+          </div>
+        )}
+      </div>
       <div className="mi-legend">
         <span><i className="mi-sw-mine" />Your basket</span>
         <span><i className="mi-sw-pub" />Published CPI-U</span>
@@ -513,6 +568,17 @@ function Tokens(): JSX.Element {
       .mi-legend i { display: inline-block; width: 14px; height: 2.5px; border-radius: 1px; margin-right: 7px; vertical-align: middle; }
       .mi-sw-mine { background: var(--accent); }
       .mi-sw-pub { background: var(--dim); }
+      .mi-chartwrap { position: relative; }
+      .mi-chart-svg { cursor: crosshair; }
+      .mi-crosshair { stroke: var(--dim); stroke-width: 1; stroke-opacity: 0.55; }
+      .mi-tip { position: absolute; top: 6px; z-index: 5; pointer-events: none; min-width: 158px;
+        background: var(--panel); border: 1px solid var(--line-2); border-radius: 7px; padding: 9px 11px;
+        font-family: var(--mono); box-shadow: 0 10px 28px rgba(0,0,0,0.14); }
+      .mi-tip-month { font-size: 10.5px; color: var(--dim); margin-bottom: 6px; }
+      .mi-tip-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 11.5px; color: var(--text); margin-top: 3px; }
+      .mi-tip-row b { color: var(--ink); font-weight: 500; }
+      .mi-tip-row i { display: inline-block; width: 12px; height: 2.5px; border-radius: 1px; margin-right: 7px; vertical-align: middle; }
+      .mi-tip-gap { border-top: 1px solid var(--line); margin-top: 6px; padding-top: 6px; }
 
       .mi-drift-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
       @media (max-width: 560px) { .mi-drift-stats { grid-template-columns: 1fr; } }
