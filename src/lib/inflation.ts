@@ -8,7 +8,7 @@
  * published all-items rate. If that reconstruction is right, every re-weighting
  * after it inherits the credibility; if it is wrong, nothing downstream is
  * worth reading. It reproduces to a mean absolute error of about 0.08
- * percentage points across the decade — see `reconstructionError`, and the
+ * percentage points across the decade - see `reconstructionError`, and the
  * test that pins it.
  *
  * **Then, change only the weights.** Same eight price series, same arithmetic,
@@ -62,7 +62,7 @@ export function publishedRate(month: MonthKey): number | null {
   return yearOnYear(CPI.allItems, month);
 }
 
-/** The published all-items history, ascending — the line every basket is
+/** The published all-items history, ascending - the line every basket is
  *  measured against. */
 export function publishedHistory(): Reading[] {
   const out: Reading[] = [];
@@ -79,7 +79,7 @@ export interface ReconstructionError {
   readonly meanAbsolutePp: number;
   readonly worstPp: number;
   readonly worstMonth: MonthKey | null;
-  /** Within a tenth of a point on average — smaller than the precision BLS
+  /** Within a tenth of a point on average - smaller than the precision BLS
    *  publishes the headline to, so a fair bar for "the machinery works". */
   readonly goodEnough: boolean;
 }
@@ -126,7 +126,7 @@ export interface Divergence {
   readonly worstGapPp: number;
   readonly worstMonth: MonthKey | null;
   /** Price level of the basket relative to the reference after compounding
-   *  each December reading — the cumulative "extra cost" over the period. */
+   *  each December reading - the cumulative "extra cost" over the period. */
   readonly cumulativeRatio: number;
 }
 
