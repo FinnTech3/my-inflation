@@ -1,5 +1,5 @@
 /**
- * Headless report — the calculator's numbers without the browser, useful for
+ * Headless report - the calculator's numbers without the browser, useful for
  * verifying the engine end to end and for capturing figures. Mirrors the
  * whose-inflation CLI: the reconstruction check comes first, on purpose,
  * because everything after it is the same arithmetic re-weighted.
@@ -27,7 +27,7 @@ function main(): void {
     process.exit(2);
   }
 
-  console.log(`\n  MY-INFLATION — reading for ${month}\n`);
+  console.log(`\n  MY-INFLATION - reading for ${month}\n`);
 
   // 1. The check the whole thing rests on.
   const err = reconstructionError(OFFICIAL.weights);

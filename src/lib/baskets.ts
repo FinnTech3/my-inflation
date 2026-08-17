@@ -8,12 +8,12 @@
  * once. Almost nobody spends like that.
  *
  * A basket re-weights the same eight official price series. Nothing about the
- * underlying prices changes — only whose budget is being weighted. That is the
+ * underlying prices changes - only whose budget is being weighted. That is the
  * point: the divergence is not a different measurement, it is the same
  * measurement asked on behalf of someone else.
  *
  * The official weights are sourced and exact (BLS relative importance, December
- * 2023). The household variants are illustrative — built by shifting shares in
+ * 2023). The household variants are illustrative - built by shifting shares in
  * the directions the Consumer Expenditure Survey documents, and labelled as
  * assumptions rather than dressed up as statistics. This mirrors the
  * whose-inflation analysis exactly; the browser tool just lets you edit them.
@@ -21,8 +21,8 @@
 
 import { GROUP_IDS } from "./cpi.js";
 
-/** Weights over the eight group series ids. Need not sum to 100 — `share`
- *  normalises — so a half-finished edit still computes something sensible. */
+/** Weights over the eight group series ids. Need not sum to 100 - `share`
+ *  normalises - so a half-finished edit still computes something sensible. */
 export type Weights = Readonly<Record<string, number>>;
 
 export interface Basket {
@@ -69,7 +69,7 @@ export const OFFICIAL: Basket = {
 const RENTER: Basket = {
   name: "renter, early career",
   rationale:
-    "Rent takes a larger bite than average — no mortgage fixed years ago, " +
+    "Rent takes a larger bite than average - no mortgage fixed years ago, " +
     "and no house whose imputed rent counts as housing without being paid. " +
     "Little on medical care; more of what's left on food.",
   weights: {
@@ -88,7 +88,7 @@ const RETIRED: Basket = {
   name: "retired, owns outright",
   rationale:
     "The mortgage is gone, so housing falls sharply as a share. Medical care " +
-    "rises to roughly double the average — the pattern BLS's experimental " +
+    "rises to roughly double the average - the pattern BLS's experimental " +
     "elderly index (CPI-E) is built to capture.",
   weights: {
     CUUR0000SAF: 15.0,
@@ -141,5 +141,5 @@ const STUDENT: Basket = {
 /** The illustrative household baskets, in the order the UI offers them. */
 export const HOUSEHOLDS: readonly Basket[] = [RENTER, RETIRED, COMMUTER, STUDENT];
 
-/** Official first, then the households — everything the presets row shows. */
+/** Official first, then the households - everything the presets row shows. */
 export const ALL_BASKETS: readonly Basket[] = [OFFICIAL, ...HOUSEHOLDS];
