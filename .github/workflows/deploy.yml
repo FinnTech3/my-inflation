@@ -1,7 +1,7 @@
 name: deploy-pages
 
 # Builds the calculator and publishes it to GitHub Pages. Everything runs in
-# the browser — the CPI data is baked into the bundle at build time, so there
+# the browser: the CPI data is baked into the bundle at build time, so there
 # is no backend and no runtime API call. Runs on every push to main.
 
 on:

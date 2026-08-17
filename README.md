@@ -8,7 +8,7 @@ data, same reconstruction, but now you build the basket.
 
 **Live calculator:** https://finntech3.github.io/my-inflation/
 
-![The calculator: a car-commuter basket at 4.0% against the 3.5% headline, and the ten-year chart where the gap opens in the 2021–22 shock](docs/screenshots/calculator-light.png)
+![The calculator: a car-commuter basket at 4.0% against the 3.5% headline, and the ten-year chart where the gap opens in the 2021 to 22 shock](docs/screenshots/calculator-light.png)
 
 ## The point
 

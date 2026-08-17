@@ -5,7 +5,7 @@ import { basketInflation, publishedRate } from "../src/lib/inflation.js";
 
 /**
  * The finding, guarded. whose-inflation's result is that households don't live
- * at persistently different rates — they diverge in a shock, roughly three
+ * at persistently different rates. They diverge in a shock, roughly three
  * times as much when headline inflation is high as when it is calm. This test
  * reproduces that ordering, and in doing so guards the one bug that would make
  * the whole tool say nothing: the baskets quietly becoming identical. Every
