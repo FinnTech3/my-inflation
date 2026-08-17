@@ -1,7 +1,7 @@
 /**
  * Basket ⇄ URL. The whole scenario is eight weights, so it fits in a short
  * hash: `#b=17.5,52,3,14,3.5,5,3.5,1.5` in GROUP_IDS order. Any basket is
- * therefore a shareable link — tweak the sliders, copy the URL, send someone
+ * therefore a shareable link - tweak the sliders, copy the URL, send someone
  * your exact budget. Pure functions, no DOM, so the round-trip is unit-tested.
  *
  * Decoding is deliberately forgiving: a missing, short, or garbled payload
@@ -41,7 +41,7 @@ export function decode(hash: string): Record<string, number> {
   for (let i = 0; i < GROUP_IDS.length; i++) {
     const id = GROUP_IDS[i];
     const n = Number(parts[i]);
-    // Any invalid entry invalidates the whole payload — a partially parsed
+    // Any invalid entry invalidates the whole payload - a partially parsed
     // basket is worse than a clean fallback to the official one.
     if (id === undefined || !Number.isFinite(n) || n < 0 || n > MAX_WEIGHT) {
       return officialWeights();

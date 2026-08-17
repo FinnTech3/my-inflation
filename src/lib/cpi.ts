@@ -1,7 +1,7 @@
 /**
  * CPI index levels, and the year-on-year arithmetic that turns them into a
- * rate. Ported from the Python that this tool's data comes from — see the
- * whose-inflation analysis — with the same two rules that keep the numbers
+ * rate. Ported from the Python that this tool's data comes from - see the
+ * whose-inflation analysis - with the same two rules that keep the numbers
  * honest.
  *
  * A price index is not a price. It starts at 100 in some reference period and
@@ -11,7 +11,7 @@
  *
  * **Year-on-year, never month-on-month.** The published index is not
  * seasonally adjusted, so comparing consecutive months mostly measures the
- * seasons — heating in January, airfares in July — rather than inflation.
+ * seasons - heating in January, airfares in July - rather than inflation.
  * Every rate here is against the same month a year earlier.
  *
  * The data is baked into the bundle at build time (see scripts/build_data.py),
@@ -68,7 +68,7 @@ export function level(seriesId: string, month: MonthKey): number | null {
 /**
  * Year-on-year change of one series in one month, as a fraction (0.03 = 3%),
  * or null if either endpoint is missing. Same month a year earlier,
- * deliberately — see the module note on seasonality.
+ * deliberately - see the module note on seasonality.
  */
 export function yearOnYear(seriesId: string, month: MonthKey): number | null {
   const now = level(seriesId, month);
@@ -83,7 +83,7 @@ export function comparableMonths(): MonthKey[] {
   return CPI.months.filter((m) => monthIndex.has(aYearEarlier(m)));
 }
 
-/** The most recent comparable month — the "latest reading" the UI leads with. */
+/** The most recent comparable month - the "latest reading" the UI leads with. */
 export function latestMonth(): MonthKey {
   const comparable = comparableMonths();
   const last = comparable[comparable.length - 1];

@@ -1,13 +1,13 @@
 /**
  * The one screen. Move eight sliders to your own budget and watch your
- * inflation rate pull away from the headline — the same reconstruction that
+ * inflation rate pull away from the headline - the same reconstruction that
  * rebuilds the official number to within a tenth of a point, asked on behalf of
  * you instead of a statistical composite.
  *
  * All the economics live in ../lib (basketInflation, publishedHistory,
  * reconstructionError, compare). This file is inputs and presentation only. The
  * design language matches rent-or-buy deliberately: warm paper, a serif display
- * voice, one accent, honest charts — a portfolio that reads as one hand.
+ * voice, one accent, honest charts - a portfolio that reads as one hand.
  */
 import { useEffect, useMemo, useState } from "react";
 
@@ -84,7 +84,7 @@ export function App(): JSX.Element {
             <p className="mi-tagline">
               The headline rate is an average of a basket nobody actually buys.
               Set the eight shares to your own budget and see the rate you’re
-              really living — and how far it drifts from the number in the news.
+              really living, and how far it drifts from the number in the news.
             </p>
           </header>
 
@@ -106,7 +106,7 @@ export function App(): JSX.Element {
             of {RECON.meanAbsolutePp.toFixed(3)}pp across {RECON.monthsCompared} months,
             which is the reason to trust everything after it. The weights are
             yours. Data: {CPI.provenance.monthsCovered}, US BLS CPI-U, baked in
-            at build time — no network calls.
+            at build time, with no network calls.
           </footer>
         </div>
       </div>
@@ -144,7 +144,7 @@ function BasketPanel(props: {
         <span>{raw.toFixed(0)}</span>
       </div>
       <p className="mi-total-note">
-        Shares are normalised, so the total need not be exactly 100 — only the
+        Shares are normalised, so the total need not be exactly 100; only the
         relative sizes matter. The grey number next to each is the official
         BLS share, for comparison.
       </p>
@@ -226,8 +226,8 @@ function Headline(props: {
     <section className="mi-verdict">
       <div className="mi-verdict-kicker">Your inflation · {LATEST}</div>
       <div className="mi-verdict-row">
-        <div className="mi-verdict-word" style={{ color: hotter ? "var(--hot)" : cooler ? "var(--cool)" : "var(--ink)" }}>
-          {myLatest !== null ? pct(myLatest, 1) : "—"}
+        <div className="mi-verdict-word">
+          {myLatest !== null ? pct(myLatest, 1) : "-"}
         </div>
         <div className="mi-verdict-gap">
           {gapPp !== null ? (
@@ -242,14 +242,14 @@ function Headline(props: {
         {presetName && presetName !== "official CPI-U"
           ? `The “${presetName}” basket `
           : "Your basket "}
-        would have felt <b>{myLatest !== null ? pct(myLatest, 1) : "—"}</b> inflation
-        this month, against the <b>{headline !== null ? pct(headline, 1) : "—"}</b> the
+        would have felt <b>{myLatest !== null ? pct(myLatest, 1) : "-"}</b> inflation
+        this month, against the <b>{headline !== null ? pct(headline, 1) : "-"}</b> the
         news reported. Same prices, a different shopping list.
       </p>
       <div className="mi-verdict-stats">
-        <Stat label="Your rate" value={myLatest !== null ? pct(myLatest, 1) : "—"} />
-        <Stat label="Published headline" value={headline !== null ? pct(headline, 1) : "—"} />
-        <Stat label="Gap this month" value={gapPp !== null ? signedPp(gapPp) : "—"} />
+        <Stat label="Your rate" value={myLatest !== null ? pct(myLatest, 1) : "-"} />
+        <Stat label="Published headline" value={headline !== null ? pct(headline, 1) : "-"} />
+        <Stat label="Gap this month" value={gapPp !== null ? signedPp(gapPp) : "-"} />
       </div>
     </section>
   );
@@ -310,7 +310,7 @@ function TimeChart(props: { mine: { month: string; rate: number }[] }): JSX.Elem
       <div className="mi-card-sub">
         The shaded band is the gap between what you’d have felt and what was
         reported. Notice it: it’s thin in calm years and opens up in the
-        2021–22 shock — the moment the one national number describes people
+        2021 to 2022 shock, the moment the one national number describes people
         least, and the moment it gets quoted hardest.
       </div>
       <svg className="mi-chart-svg" viewBox={`0 0 ${CW} ${CH}`} role="img" aria-label="Year-on-year inflation: your basket versus the published CPI.">
@@ -352,7 +352,7 @@ function DriftCard(props: { drift: { cumulativeRatio: number; worstGapPp: number
       </div>
       <p className="mi-drift-note">
         Averaged over ten years the households land within about a point of each
-        other — on a long view the headline is a decent summary of most people.
+        other. On a long view the headline is a decent summary of most people.
         The disagreement isn’t persistent; it’s concentrated in the shock, which
         is exactly where the chart above pulls apart.
       </p>
@@ -375,7 +375,7 @@ function HonestNote(): JSX.Element {
         </li>
         <li>
           <b>Eight major groups, not the full detail.</b> Real gaps concentrate
-          in specific items — petrol rather than “transport”, rent rather than
+          in specific items, like petrol rather than “transport”, rent rather than
           “housing”. Eight groups is the level at which the reconstruction can
           be verified against the published number, so it’s where this stays
           honest rather than sharper-but-unchecked.
@@ -422,110 +422,109 @@ function Tokens(): JSX.Element {
   return (
     <style>{`
       :root {
-        --bg:#faf9f7; --panel:#ffffff; --panel-2:#f4f2ee; --line:#e7e3dd; --line-2:#d6d1c8;
-        --ink:#1a1d1f; --text:#3c4043; --dim:#6b7075; --dim-2:#9a9ea3;
-        --accent:#1f6f78; --accent-soft:rgba(31,111,120,0.14);
-        --hot:#b5673f; --cool:#2f7d55;
-        --serif: Georgia, 'Times New Roman', 'Iowan Old Style', serif;
-        --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        --bg:#ffffff; --panel:#ffffff; --panel-2:#f3f4f6; --line:#e6e8eb; --line-2:#d2d6db;
+        --ink:#0f1419; --text:#343b43; --dim:#697079; --dim-2:#9aa1a9;
+        --accent:#1b4a7a; --accent-soft:rgba(27,74,122,0.09);
+        --hot:#a5344a; --cool:#1f6b45;
+        --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
       }
       @media (prefers-color-scheme: dark) {
         :root:not([data-theme="light"]) {
-          --bg:#14171a; --panel:#1b1f23; --panel-2:#20252a; --line:#2a2f34; --line-2:#39414a;
-          --ink:#eef1f3; --text:#c3c8cc; --dim:#868d93; --dim-2:#5f676d;
-          --accent:#4fb3bf; --accent-soft:rgba(79,179,191,0.16);
-          --hot:#cc8a63; --cool:#5aa87a;
+          --bg:#0c0e11; --panel:#121519; --panel-2:#181c21; --line:#232930; --line-2:#333b43;
+          --ink:#eef1f4; --text:#bfc5cc; --dim:#7f868e; --dim-2:#565d64;
+          --accent:#6aa2db; --accent-soft:rgba(106,162,219,0.14);
+          --hot:#cf6f80; --cool:#519b70;
         }
       }
       * { box-sizing: border-box; }
       html, body { margin: 0; padding: 0; background: var(--bg); }
       .mi-page { min-height: 100vh; background: var(--bg); color: var(--text);
-        font-family: var(--sans); font-size: 14px; line-height: 1.5;
-        font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
-      .mi-shell { max-width: 1180px; margin: 0 auto; padding: 40px 24px 64px; }
-      .mi-header { margin-bottom: 28px; }
+        font-family: var(--sans); font-size: 14px; line-height: 1.55;
+        font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+      .mi-shell { max-width: 1160px; margin: 0 auto; padding: 48px 24px 72px; }
+      .mi-header { margin-bottom: 34px; }
       .mi-header-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
       .mi-header-actions { display: flex; gap: 8px; }
-      .mi-ghost-btn { font: inherit; font-size: 12px; color: var(--accent); background: transparent;
-        border: 1px solid var(--line-2); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
-      .mi-ghost-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
-      .mi-wordmark { font-family: var(--serif); font-weight: 700; color: var(--ink);
-        font-size: 38px; letter-spacing: -0.01em; margin: 0 0 8px; }
-      .mi-tagline { font-size: 16px; color: var(--dim); margin: 8px 0 0; max-width: 60ch; }
+      .mi-ghost-btn { font-family: var(--mono); font-size: 12px; color: var(--text); background: transparent;
+        border: 1px solid var(--line-2); border-radius: 5px; padding: 6px 11px; cursor: pointer; transition: border-color .12s, color .12s; }
+      .mi-ghost-btn:hover { border-color: var(--ink); color: var(--ink); }
+      .mi-wordmark { font-family: var(--sans); font-weight: 600; color: var(--ink);
+        font-size: 25px; letter-spacing: -0.02em; margin: 0; }
+      .mi-tagline { font-size: 15.5px; color: var(--dim); margin: 14px 0 0; max-width: 62ch; line-height: 1.5; }
 
-      .mi-grid { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 28px; align-items: start; }
+      .mi-grid { display: grid; grid-template-columns: 336px minmax(0, 1fr); gap: 32px; align-items: start; }
       @media (max-width: 900px) { .mi-grid { grid-template-columns: minmax(0,1fr); } }
 
       /* basket panel */
-      .mi-inputs { display: flex; flex-direction: column; gap: 14px;
-        background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
-      .mi-group-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
-        color: var(--dim); font-weight: 600; }
-      .mi-sliders { display: flex; flex-direction: column; gap: 14px; }
-      .mi-field { display: flex; flex-direction: column; gap: 5px; }
+      .mi-inputs { display: flex; flex-direction: column; gap: 16px;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+      .mi-group-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; color: var(--dim); font-weight: 500; }
+      .mi-sliders { display: flex; flex-direction: column; gap: 15px; }
+      .mi-field { display: flex; flex-direction: column; gap: 6px; }
       .mi-field-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
       .mi-field-label { font-size: 13px; color: var(--text); }
-      .mi-field-value { font-size: 13px; color: var(--ink); font-weight: 600; }
-      .mi-field-official { color: var(--dim-2); font-weight: 400; font-size: 11px; }
+      .mi-field-value { font-family: var(--mono); font-size: 12.5px; color: var(--ink); font-weight: 500; }
+      .mi-field-official { font-family: var(--mono); color: var(--dim-2); font-weight: 400; font-size: 11px; }
       .mi-range { width: 100%; accent-color: var(--accent); }
-      .mi-total { display: flex; justify-content: space-between; font-size: 12px; color: var(--dim);
-        border-top: 1px solid var(--line); padding-top: 10px; }
-      .mi-total-off span:last-child { color: var(--hot); font-weight: 600; }
-      .mi-total-note { font-size: 11px; color: var(--dim-2); margin: 0; }
+      .mi-total { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--dim);
+        border-top: 1px solid var(--line); padding-top: 12px; }
+      .mi-total-off span:last-child { color: var(--hot); font-weight: 500; }
+      .mi-total-note { font-size: 11.5px; color: var(--dim-2); margin: 0; line-height: 1.45; }
 
       /* answer column */
-      .mi-answer { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+      .mi-answer { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
       .mi-presets { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-      .mi-presets-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); }
-      .mi-presets-chips { display: flex; gap: 8px; flex-wrap: wrap; }
-      .mi-chip { font: inherit; font-size: 12px; color: var(--text); background: var(--panel);
-        border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
-      .mi-chip:hover { border-color: var(--accent); color: var(--ink); }
-      .mi-chip-on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+      .mi-presets-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; color: var(--dim); }
+      .mi-presets-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+      .mi-chip { font-family: var(--mono); font-size: 12px; color: var(--text); background: transparent;
+        border: 1px solid var(--line-2); border-radius: 5px; padding: 5px 10px; cursor: pointer; transition: border-color .12s, color .12s; }
+      .mi-chip:hover { border-color: var(--ink); color: var(--ink); }
+      .mi-chip-on { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 500; }
 
-      .mi-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
-      .mi-card-title { font-family: var(--serif); font-size: 18px; color: var(--ink); margin: 0 0 4px; font-weight: 600; }
-      .mi-card-sub { font-size: 13px; color: var(--dim); margin: 0 0 16px; max-width: 66ch; }
+      .mi-card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 22px; }
+      .mi-card-title { font-family: var(--sans); font-size: 16px; color: var(--ink); margin: 0 0 5px; font-weight: 600; letter-spacing: -0.01em; }
+      .mi-card-sub { font-size: 13px; color: var(--dim); margin: 0 0 18px; max-width: 66ch; line-height: 1.5; }
 
-      .mi-verdict { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
-      .mi-verdict-kicker { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--dim); }
-      .mi-verdict-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 6px; }
-      .mi-verdict-word { font-family: var(--serif); font-weight: 700; font-size: 52px; line-height: 1; letter-spacing: -0.01em; }
+      .mi-verdict { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 26px; }
+      .mi-verdict-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.02em; color: var(--dim); }
+      .mi-verdict-row { display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-top: 10px; }
+      .mi-verdict-word { font-family: var(--mono); font-weight: 500; font-size: 46px; line-height: 1; letter-spacing: -0.03em; color: var(--ink); }
       .mi-verdict-gap { font-size: 15px; color: var(--dim); }
-      .mi-verdict-gap b { font-size: 18px; }
-      .mi-verdict-sentence { font-size: 15px; color: var(--text); margin: 16px 0 20px; max-width: 64ch; }
-      .mi-verdict-sentence b { color: var(--ink); }
-      .mi-verdict-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; border-top: 1px solid var(--line); padding-top: 16px; }
+      .mi-verdict-gap b { font-family: var(--mono); font-size: 16px; font-weight: 500; }
+      .mi-verdict-sentence { font-size: 15px; color: var(--text); margin: 18px 0 22px; max-width: 64ch; line-height: 1.55; }
+      .mi-verdict-sentence b { color: var(--ink); font-weight: 600; }
+      .mi-verdict-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; border-top: 1px solid var(--line); padding-top: 18px; }
       @media (max-width: 560px) { .mi-verdict-stats { grid-template-columns: repeat(3, 1fr); } }
-      .mi-stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); }
-      .mi-stat-value { font-family: var(--serif); font-size: 22px; color: var(--ink); margin-top: 3px; }
+      .mi-stat-label { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.02em; color: var(--dim); }
+      .mi-stat-value { font-family: var(--mono); font-size: 21px; font-weight: 500; color: var(--ink); margin-top: 5px; }
 
       /* chart */
       .mi-chart-svg { width: 100%; height: auto; display: block; }
       .mi-grid { stroke: var(--line); stroke-width: 1; }
       .mi-axis-zero { stroke: var(--line-2); stroke-width: 1.4; }
-      .mi-axis-label { fill: var(--dim); font-size: 11px; font-family: var(--sans); }
+      .mi-axis-label { fill: var(--dim); font-size: 10px; font-family: var(--mono); }
       .mi-band { fill: var(--accent-soft); stroke: none; }
-      .mi-line-mine { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; }
-      .mi-line-pub { fill: none; stroke: var(--dim); stroke-width: 1.6; stroke-dasharray: 4 3; stroke-linejoin: round; }
+      .mi-line-mine { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+      .mi-line-pub { fill: none; stroke: var(--dim); stroke-width: 1.4; stroke-dasharray: 4 3; stroke-linejoin: round; }
       .mi-dot-mine { fill: var(--accent); }
       .mi-dot-pub { fill: var(--dim); }
-      .mi-legend { display: flex; gap: 18px; margin-top: 10px; font-size: 12px; color: var(--text); }
-      .mi-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+      .mi-legend { display: flex; gap: 18px; margin-top: 12px; font-family: var(--mono); font-size: 11.5px; color: var(--text); }
+      .mi-legend i { display: inline-block; width: 14px; height: 2.5px; border-radius: 1px; margin-right: 7px; vertical-align: middle; }
       .mi-sw-mine { background: var(--accent); }
       .mi-sw-pub { background: var(--dim); }
 
-      .mi-drift-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .mi-drift-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
       @media (max-width: 560px) { .mi-drift-stats { grid-template-columns: 1fr; } }
-      .mi-drift-note { font-size: 13px; color: var(--text); margin: 16px 0 0; padding-top: 14px; border-top: 1px solid var(--line); max-width: 66ch; }
+      .mi-drift-note { font-size: 13px; color: var(--text); margin: 18px 0 0; padding-top: 16px; border-top: 1px solid var(--line); max-width: 66ch; line-height: 1.55; }
 
-      .mi-disclose { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 20px; }
-      .mi-disclose summary { cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 600; }
-      .mi-disclose ul { margin: 12px 0 2px; padding-left: 18px; color: var(--text); font-size: 13px; }
-      .mi-disclose li { margin-bottom: 8px; }
+      .mi-disclose { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px 22px; }
+      .mi-disclose summary { cursor: pointer; font-size: 13px; color: var(--ink); font-weight: 600; }
+      .mi-disclose ul { margin: 14px 0 2px; padding-left: 18px; color: var(--text); font-size: 13px; }
+      .mi-disclose li { margin-bottom: 9px; line-height: 1.55; }
       .mi-disclose b { color: var(--ink); }
 
-      .mi-footer { margin-top: 40px; font-size: 12px; color: var(--dim-2); max-width: 76ch; }
+      .mi-footer { margin-top: 44px; font-size: 12px; color: var(--dim-2); max-width: 78ch; line-height: 1.55; }
     `}</style>
   );
 }
